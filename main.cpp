@@ -6,9 +6,7 @@ class Adress
 {
 public:
 
-	Adress() = default;
-
-	void Initalizator(std::string adress, std::string street, std::string number_house, std::string number_apartment)
+	Adress(std::string adress, std::string street, std::string number_house, std::string number_apartment)
 	{
 		this->adress = adress;
 		this->street = street;
@@ -42,6 +40,14 @@ public:
 	{
 		return number_apartment;
 	}
+	void Initalizator(std::string adress,std::string street,std::string number_house,std::string number_apartment)
+	{
+		this->adress = adress;
+		this->street = street;
+		this->number_house = number_house;
+		this->number_apartment = number_apartment;
+	}
+	
 private:
 	std::string adress;
 	std::string street;
@@ -81,8 +87,9 @@ int main()
 	getline(InFile, str_size_struct);
 	size_t size_struct = std::stoi(str_size_struct);
 
-	Adress* ptr_adress = new Adress[size_struct];
+	//Adress* ptr_adress = new Adress[size_struct];
 
+	Adress* ptr_adress = (Adress*)operator new(size_struct * sizeof(Adress));
 	for (int i = 0; i < size_struct; ++i)
 	{
 		std::string adress;
@@ -95,8 +102,8 @@ int main()
 		getline(InFile, str_number_house);
 		getline(InFile, str_number_apartment);
 
-
-		ptr_adress[i].Initalizator(adress, street, str_number_house, str_number_apartment);
+		new (ptr_adress + i) Adress(adress, street, str_number_house, str_number_apartment);
+		//ptr_adress[i].Initalizator(adress, street, str_number_house, str_number_apartment);
 	}
 	InFile.close();
 
@@ -109,5 +116,5 @@ int main()
 		OutFile << ptr_adress[i].OutPutStr() << std::endl;
 	}
 	OutFile.close();
-	delete[] ptr_adress; 
+	operator	delete(ptr_adress); 
 }

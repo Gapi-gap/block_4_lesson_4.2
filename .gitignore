@@ -1,0 +1,5 @@
+*.filters
+*.user
+.vs/
+lesson_4.2/
+x64/
